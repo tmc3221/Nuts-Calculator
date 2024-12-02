@@ -1,6 +1,7 @@
 import random
 from Card import Card
 
+# Deck.py
 class Deck:
     def __init__(self):
         """Initialize a new deck of cards."""
@@ -43,10 +44,3 @@ class Deck:
     def __str__(self):
         """Return a string representation of the deck"""
         return f"Deck({len(self.cards)} cards, shuffled={self.shuffled}, dealt_count={self.dealt_count})"
-
-# Example usage:
-deck = Deck()
-deck.shuffle()
-print(deck.draw())
-print(deck.draw())
-print(deck)
