@@ -120,7 +120,7 @@ public abstract class AbstractMap<K, V> implements Map<K, V> {
          * @param entry we are adding
          */
         public void add(Entry<K, V> entry) {
-            List.addLast(entry);
+            list.addLast(entry);
         }
 
         /**

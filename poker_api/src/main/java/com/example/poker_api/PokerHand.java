@@ -14,6 +14,14 @@ public class PokerHand {
     private List<String> cards;
 
     /**
+     * Constructs a poker hand with a set of cards
+     * @param cards the cards we are using to create the poker hand
+     */
+    public PokerHand(List<String> cards) {
+        setCards(cards);
+    }
+
+    /**
      * Method to get the list of cards in the poker hand
      * @return the list of cards in the poker hand
      */
@@ -25,7 +33,9 @@ public class PokerHand {
      * Method to set the list of cards in the poker hand
      * @param cards the list of cards in the poker hand
      */
-    public void setCards(List<String> cards) {
+    private void setCards(List<String> cards) {
         this.cards = cards;
     }
+
+    // TODO: Add a toString method to print out the cards in the hand
 }
