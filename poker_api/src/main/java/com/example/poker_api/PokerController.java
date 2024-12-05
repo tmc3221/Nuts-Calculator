@@ -41,8 +41,8 @@ public class PokerController {
      */
     @PostMapping("/bestHand")
     public ResponseEntity<String> getBestHand(@RequestBody PokerHand pokerHand) {
-        calculateBestHand(pokerHand.getCards());
-        return ResponseEntity.ok(nuts);
+        String bestHand = calculateBestHand(pokerHand.getCards());
+        return ResponseEntity.ok(new BestHandResponse(bestHand));
     }
 
     /**
@@ -51,7 +51,7 @@ public class PokerController {
      * the best hand from
      * @return The best hand from the list of cards
      */
-    private void calculateBestHand(List<String> cards) {
+    private String calculateBestHand(List<String> cards) {
         // Parse ranks and suits
         List<String> ranks = new ArrayBasedList<>();
         List<Character> suits = new ArrayBasedList<>();
@@ -95,30 +95,32 @@ public class PokerController {
         // Check for specific hand rankings
         if (flush && straight && rankValues.get(14) != null) {
             nuts = "Royal Flush"; // Straight Flush with Ace high
-            return;
+            return nuts;
         } else if (straight && flush) {
             straight_flush(rankValues);
-            return;
+            return nuts;
         } else if (quads(rankFrequencies)) {
-            return;
+            return nuts;
         } else if (fullhouse(rankFrequencies)) {
-            return;
+            return nuts;
         } else if (flush) {
-            return;
+            return nuts;
         } else if (straight) {
             nuts = "Straight: " + straight_val + " high";
-            return;
+            return nuts;
         } else if (three_of_a_kind(rankFrequencies)) {
-            return;
+            return nuts;
         } else if (twoPair(rankFrequencies)) {
-            return;
+            return nuts;
         } else if (pair(rankFrequencies)) {
-            return;
+            return nuts;
+        } else {
+            // Default to High Card
+            int highCard = rankValues.get(rankValues.size() - 1);
+            nuts = "High Card: " + valueToRank(highCard);
         }
 
-        // Default to High Card
-        int highCard = rankValues.get(rankValues.size() - 1);
-        nuts = "High Card: " + valueToRank(highCard);
+        return nuts;
     }
 
     /**
@@ -359,5 +361,42 @@ public class PokerController {
                 straight_val = valueToRank(i);
         }
         return values.size() >= 5;
+    }
+
+    /**
+     * Private inner class to represent the server response
+     * 
+     * @author Tristan Curtis (tmc3221)
+     */
+    private static class BestHandResponse {
+
+        /** The best hand possible */
+        private String bestHand;
+    
+        /**
+         * Constructs a BestHandResponse with a best hand
+         * @param bestHand the best hand
+         */
+        public BestHandResponse(String bestHand) {
+            this.bestHand = bestHand;
+        }
+    
+        /**
+         * Method to get the best hand
+         * @return the best hand
+         */
+        @SuppressWarnings("unused")
+        public String getBestHand() {
+            return bestHand;
+        }
+    
+        /**
+         * Sets the best hand
+         * @param bestHand the best hand
+         */
+        @SuppressWarnings("unused")
+        public void setBestHand(String bestHand) {
+            this.bestHand = bestHand;
+        }
     }
 }
