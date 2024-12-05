@@ -1,21 +1,19 @@
 import requests
-import json
 
-# URL of the Java REST API
-url = "http://localhost:8080/api/poker/bestHand"
-headers = {"Content-Type": "application/json"}
+# Replace with the actual URL of your Spring Boot server
+BASE_URL = "http://localhost:8080"
 
-# Sample input cards
-'''data = {
-    "cards": ["AH", "KH", "2D", "3C", "5S"]
-}'''
+def test_get_endpoint():
+    response = requests.get(f"{BASE_URL}/bestHand ?cards=2H,3D,5S,9C,KD")
+    print("GET /bestHand response:", response.json())
+    assert response.status_code == 200
 
-# Send POST request
-response = requests.post(url, headers=headers, data=json.dumps(data))
+def test_post_endpoint():
+    payload = {"name": "test"}
+    response = requests.post(f"{BASE_URL}/bestHand", json=payload)
+    print("POST /bestHand response:", response.json())
+    assert response.status_code == 201
 
-# Handle the response
-if response.status_code == 200:
-    best_hand = response.text
-    print(f"The best hand (NUTS) is: {best_hand}")
-else:
-    print(f"Failed to get the best hand. Status code: {response.status_code}")
+if __name__ == "__main__":
+    test_get_endpoint()
+    test_post_endpoint()
